@@ -28,6 +28,9 @@ namespace CSharpBlog.Controllers
             {
                 return HttpNotFound();
             }
+            post.Views += 1;
+            db.Entry(post).State = EntityState.Modified;
+            db.SaveChanges();
             return View(post);
         }
 
@@ -85,6 +88,7 @@ namespace CSharpBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                post.DateModified = DateTime.Now;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -117,7 +121,7 @@ namespace CSharpBlog.Controllers
             Post post = db.Posts.Find(id);
             db.Posts.Remove(post);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home", null);
         }
 
         protected override void Dispose(bool disposing)
