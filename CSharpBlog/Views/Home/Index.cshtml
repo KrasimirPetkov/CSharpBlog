@@ -16,13 +16,19 @@
                 @Html.ActionLink("Delete", "Delete", "Posts", new { id = post.Id }, null)
             }
 
-            <p class="lead">Written by: @post.Author.Email (@post.DateCreated.ToString("dd-MM-yyyy") at @post.DateCreated.ToString("HH:mm"))</p>
+            <p class="lead">Written by: @post.Author.FullName (@post.DateCreated.ToString("dd-MM-yyyy") at @post.DateCreated.ToString("HH:mm"))</p>
             <p class="lead">@Html.Raw(post.Body)</p>
             <p class="lead">@post.Category.Name</p>
             <p class="lead">@post.Views</p>
         }
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 well">
         <h1>Sidebar</h1>
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            @Html.Label("Search: ")
+            @Html.TextBox("search", null, new { @class="form-control" })
+            <input type="submit" value="Search" class="btn btn-default" />
+        }
     </div>
 </div>

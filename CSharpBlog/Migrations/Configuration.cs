@@ -30,6 +30,7 @@ namespace CSharpBlog.Migrations
                 var user = new ApplicationUser
                 {
                     UserName = "administrator@csharpblog.bg",
+                    FullName = "The Administrator",
                     Email = "administrator@csharpblog.bg"
                 };
                 IdentityResult userResult = userManager.Create(user, "administrator");

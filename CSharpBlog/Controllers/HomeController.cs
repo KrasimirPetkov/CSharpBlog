@@ -12,9 +12,14 @@ namespace CSharpBlog.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
             var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).OrderByDescending(x => x.DateCreated).ToList();
+            
+            if (!string.IsNullOrEmpty(search))
+            {
+                posts = db.Posts.Include(p => p.Author).Include(p => p.Category).Where(x => x.Title.Contains(search)).OrderByDescending(x => x.DateCreated).ToList();
+            }
 
             return View(posts);
         }

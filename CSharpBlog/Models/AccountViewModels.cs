@@ -70,6 +70,11 @@ namespace CSharpBlog.Models
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Full Name")]
+        [StringLength(128, ErrorMessage = "The Full Name should be between 3 and 128 characters.", MinimumLength = 3)]
+        public string FullName { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
