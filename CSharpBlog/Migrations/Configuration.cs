@@ -38,6 +38,15 @@ namespace CSharpBlog.Migrations
                     userManager.AddToRole(user.Id, "Administrator");
                 }
             }
+            if (!context.Categories.Any())
+            {
+                context.Categories.Add(new Category() { Name = "Articles" });
+                context.Categories.Add(new Category() { Name = "Hardware" });
+                context.Categories.Add(new Category() { Name = "Lifestyle" });
+                context.Categories.Add(new Category() { Name = "News" });
+                context.Categories.Add(new Category() { Name = "Projects" });
+                context.Categories.Add(new Category() { Name = "Tutorials" });
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace CSharpBlog.Controllers
 
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p => p.Author).OrderByDescending(x => x.DateCreated).ToList();
+            var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).OrderByDescending(x => x.DateCreated).ToList();
 
             return View(posts);
         }

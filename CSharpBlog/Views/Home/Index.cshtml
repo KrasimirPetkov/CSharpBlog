@@ -18,6 +18,7 @@
 
             <p class="lead">Written by: @post.Author.Email (@post.DateCreated.ToString("dd-MM-yyyy") at @post.DateCreated.ToString("HH:mm"))</p>
             <p class="lead">@Html.Raw(post.Body)</p>
+            <p class="lead">@post.Category.Name</p>
             <p class="lead">@post.Views</p>
         }
     </div>

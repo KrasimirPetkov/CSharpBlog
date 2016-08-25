@@ -38,6 +38,7 @@ namespace CSharpBlog.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -48,7 +49,7 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include = "Id,Title,Body,DateCreated,DateModified")] Post post)
+        public ActionResult Create([Bind(Include = "Id,Title,Body,DateCreated,CategoryId")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -70,11 +71,12 @@ namespace CSharpBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", post.Category.CategoryId);
             return View(post);
         }
 
@@ -84,14 +86,14 @@ namespace CSharpBlog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,Title,DateCreated,DateModified")] Post post)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,CategoryId")] Post post)
         {
             if (ModelState.IsValid)
             {
                 post.DateModified = DateTime.Now;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home", null);
             }
             return View(post);
         }
