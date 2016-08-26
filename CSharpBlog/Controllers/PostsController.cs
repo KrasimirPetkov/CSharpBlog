@@ -23,7 +23,11 @@ namespace CSharpBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Include(p => p.Category)
+                                .Include(p => p.Tags)
+                                .Include(p => p.Comments)
+                                .Include(p => p.Author)
+                                .FirstOrDefault(p => p.Id == id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -85,6 +89,7 @@ namespace CSharpBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit([Bind(Include = "Id,Title,Body,CategoryId")] Post post)
         {

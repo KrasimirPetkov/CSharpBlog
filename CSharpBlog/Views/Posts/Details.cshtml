@@ -1,4 +1,5 @@
-﻿@model CSharpBlog.Models.Post
+﻿@using CSharpBlog.Models
+@model Post
 
 @{
     ViewBag.Title = "Details";
@@ -36,7 +37,32 @@
 
     </dl>
 </div>
+<div>
+    @foreach (var comment in (IEnumerable<Comment>)Model.Comments)
+    {
+        <div>
+            @comment.Author.FullName<br />
+            @comment.DateCreated<br />
+            @comment.Body
+        </div>
+    }
+</div>
+<div>
+    @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions
+    {
+        UpdateTargetId = "renderComments",
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET"
+    }, new { @class = "btn btn-default" })
+    <div id="renderComments">
+    </div>
+</div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}

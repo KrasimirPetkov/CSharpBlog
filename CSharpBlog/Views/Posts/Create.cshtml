@@ -26,8 +26,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Body, new { @class = "form-control" })
+                @Html.TextAreaFor(model => model.Body, new { @class = "form-control", @id = "ckedt" })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+                <script>
+                    CKEDITOR.replace( 'ckedt' );
+                </script>
             </div>
         </div>
         @Html.DropDownList("CategoryId", null, "- Select Category -", new { @class = "form-control" })
@@ -45,4 +48,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+}
+@section CKEditor {
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 }
