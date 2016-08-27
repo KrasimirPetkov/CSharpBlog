@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CSharpBlog.Models;
+using CSharpBlog.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -18,6 +19,7 @@ namespace CSharpBlog.Controllers
 
         // GET: Comments
         [Authorize]
+        [AjaxOnly]
         public ActionResult Create(int postId)
         {
             ViewBag.PostId = postId;
@@ -38,7 +40,6 @@ namespace CSharpBlog.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", "Posts", new { id = comment.PostId });
             }
-
             return PartialView(comment);
         }
 
