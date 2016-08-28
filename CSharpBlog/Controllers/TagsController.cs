@@ -10,107 +10,107 @@ using CSharpBlog.Models;
 
 namespace CSharpBlog.Controllers
 {
-    public class CommentsController : Controller
+    public class TagsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Comments
+        // GET: Tags
         public ActionResult Index()
         {
-            return View(db.Comments.ToList());
+            return View(db.Tags.ToList());
         }
 
-        // GET: Comments/Details/5
+        // GET: Tags/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(tag);
         }
 
-        // GET: Comments/Create
+        // GET: Tags/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Comments/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,PostId,Body,DateCreated,DateModified")] Comment comment)
+        public ActionResult Create([Bind(Include = "TagId,Name")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                db.Comments.Add(comment);
+                db.Tags.Add(tag);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(comment);
+            return View(tag);
         }
 
-        // GET: Comments/Edit/5
+        // GET: Tags/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(tag);
         }
 
-        // POST: Comments/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,PostId,Body,DateCreated,DateModified")] Comment comment)
+        public ActionResult Edit([Bind(Include = "TagId,Name")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comment).State = EntityState.Modified;
+                db.Entry(tag).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(comment);
+            return View(tag);
         }
 
-        // GET: Comments/Delete/5
+        // GET: Tags/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(tag);
         }
 
-        // POST: Comments/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Comment comment = db.Comments.Find(id);
-            db.Comments.Remove(comment);
+            Tag tag = db.Tags.Find(id);
+            db.Tags.Remove(tag);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

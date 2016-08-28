@@ -33,3 +33,11 @@ textarea {
 .img-header {
     margin-bottom: 10px;
 }
+
+.nav-up {
+    top: -50px;
+    -webkit-transition: ease-in-out 0.8s;
+    -moz-transition: ease-in-out 0.8s;
+    -o-transition: ease-in-out 0.8s;
+    transition: ease-in-out 0.8s;
+}

@@ -40,15 +40,31 @@
 <div>
     @foreach (var comment in (IEnumerable<Comment>)Model.Comments)
     {
-        <div>
+        <div id="@comment.CommentId.ToString()">
             @comment.Author.FullName<br />
             @comment.DateCreated<br />
             @comment.Body
+            @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
+            {
+                <span class="comment-edit">
+                    [
+                    @Ajax.ActionLink("Edit", "Edit", "Comments", new { id = comment.CommentId }, new AjaxOptions
+                    {
+                        UpdateTargetId = comment.CommentId.ToString(),
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET"
+                    }, null)
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", "Posts", new { id = comment.CommentId }, null)
+                    ]
+                </span>
+            }
         </div>
+        
     }
 </div>
 <div>
-    @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions
+    @Ajax.ActionLink("New Comment", "Create", "Comments", new { PostId = Model.Id }, new AjaxOptions
     {
         UpdateTargetId = "renderComments",
         InsertionMode = InsertionMode.Replace,

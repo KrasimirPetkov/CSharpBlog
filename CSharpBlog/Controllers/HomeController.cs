@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using PagedList;
 
 namespace CSharpBlog.Controllers
 {
@@ -12,16 +13,18 @@ namespace CSharpBlog.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index(string search)
+        public ActionResult Index(string q, int? page)
         {
-            var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).OrderByDescending(x => x.DateCreated).ToList();
+            var pageNumber = page ?? 1;
+            var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).OrderByDescending(x => x.DateCreated);
             
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(q))
             {
-                posts = db.Posts.Include(p => p.Author).Include(p => p.Category).Where(x => x.Title.Contains(search)).OrderByDescending(x => x.DateCreated).ToList();
+                posts = db.Posts.Include(p => p.Author).Include(p => p.Category).Where(x => x.Title.Contains(q)).OrderByDescending(x => x.DateCreated);
             }
+            var currentPage = posts.ToPagedList(pageNumber, 5);
 
-            return View(posts);
+            return View(currentPage);
         }
 
         public ActionResult About()
