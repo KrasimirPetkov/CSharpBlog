@@ -27,10 +27,6 @@
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DateModified)
-        </dt>
-
         <dd>
             @Html.DisplayFor(model => model.DateModified)
         </dd>
@@ -40,22 +36,26 @@
 <div>
     @foreach (var comment in (IEnumerable<Comment>)Model.Comments)
     {
-        <div id="@comment.CommentId.ToString()">
-            @comment.Author.FullName<br />
+        <div id="@comment.Id.ToString()">
             @comment.DateCreated<br />
             @comment.Body
             @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
             {
                 <span class="comment-edit">
                     [
-                    @Ajax.ActionLink("Edit", "Edit", "Comments", new { id = comment.CommentId }, new AjaxOptions
+                    @Ajax.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, new AjaxOptions
                     {
-                        UpdateTargetId = comment.CommentId.ToString(),
+                        UpdateTargetId = comment.Id.ToString(),
                         InsertionMode = InsertionMode.Replace,
                         HttpMethod = "GET"
                     }, null)
                     <span>|</span>
-                    @Html.ActionLink("Delete", "Delete", "Posts", new { id = comment.CommentId }, null)
+                    @Ajax.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, new AjaxOptions
+                    {
+                        UpdateTargetId = comment.Id.ToString(),
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET"
+                    }, null)
                     ]
                 </span>
             }
@@ -64,7 +64,7 @@
     }
 </div>
 <div>
-    @Ajax.ActionLink("New Comment", "Create", "Comments", new { PostId = Model.Id }, new AjaxOptions
+    @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions
     {
         UpdateTargetId = "renderComments",
         InsertionMode = InsertionMode.Replace,

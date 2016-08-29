@@ -15,30 +15,16 @@ namespace CSharpBlog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Comments
-        public ActionResult Index()
+        public ActionResult Index(int postId)
         {
-            return View(db.Comments.ToList());
-        }
-
-        // GET: Comments/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
+            return PartialView(db.Comments.Where(c => c.PostId == postId).ToList());
         }
 
         // GET: Comments/Create
-        public ActionResult Create()
+        public ActionResult Create(int postId)
         {
-            return View();
+            ViewBag.PostId = postId;
+            return PartialView();
         }
 
         // POST: Comments/Create
@@ -46,16 +32,16 @@ namespace CSharpBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,PostId,Body,DateCreated,DateModified")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,PostId,Body")] Comment comment)
         {
             if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Posts", new { @id = comment.PostId });
             }
 
-            return View(comment);
+            return PartialView(comment);
         }
 
         // GET: Comments/Edit/5
@@ -84,7 +70,7 @@ namespace CSharpBlog.Controllers
             {
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Posts", new { @id = comment.PostId });
             }
             return View(comment);
         }
@@ -112,7 +98,7 @@ namespace CSharpBlog.Controllers
             Comment comment = db.Comments.Find(id);
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Posts", new { @id = comment.PostId });
         }
 
         protected override void Dispose(bool disposing)
