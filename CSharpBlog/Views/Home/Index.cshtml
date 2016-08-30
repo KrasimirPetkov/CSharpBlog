@@ -17,39 +17,48 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-xs-11 post-title text-center">
+                        <div class="col-xs-12 post-title text-center">
                             @Html.ActionLink(post.Title, "Details", "Posts", new { id = post.Id }, null)
-                        </div>
-                        <div class="col-xs-1 text-right">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="post-edit"> @post.Views</span>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p>@Html.Raw(post.Body)</p>
+                    <div class="col-xs-6 col-md-3">
+                        @post.Category.Name
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        @post.Author.FullName
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        @post.DateCreated
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                        @post.Views<span> | </span>
+                        <span class="glyphicon glyphicon-comment"></span>
+                        @post.Comments.Count()
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <p>@Html.Raw(post.Body)</p>
+                    </div>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-md-3">
-                            By: @post.Author.FullName
+                        <div class="col-xs-8">
+                            @foreach (var tag in post.Tags)
+                            {
+                                <span class="btn btn-default">@tag.Name</span>
+                            }
                         </div>
-                        <div class="col-md-3">
-                            @(post.DateModified != null ? post.DateModified : post.DateCreated)
-                        </div>
-                        <div class="col-md-3">
-                            @post.Category.Name
-                        </div>
-                        <div class="col-md-3 text-right">
+                        <div class="col-xs-4 text-right">
                             @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
                             {
-                                <span class="post-edit">
-                                    [
-                                    @Html.ActionLink("Edit", "Edit", "Posts", new { id = post.Id }, null)
-                                    <span>|</span>
-                                    @Html.ActionLink("Delete", "Delete", "Posts", new { id = post.Id }, null)
-                                    ]
-                                </span>
+                                <div class="btn btn-group">
+                                    @Html.ActionLink("Edit", "Edit", "Posts", new { id = post.Id }, new { @class = "btn btn-info" })
+                                    @Html.ActionLink("Delete", "Delete", "Posts", new { id = post.Id }, new { @class = "btn btn-info" })
+                                </div>
                             }
                         </div>
                     </div>

@@ -29,11 +29,12 @@
                 @Html.TextAreaFor(model => model.Body, new { @class = "form-control", @id = "ckedt" })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
                 <script>
-                    CKEDITOR.replace( 'ckedt' );
+                    CKEDITOR.replace('ckedt');
                 </script>
             </div>
         </div>
         @Html.DropDownList("CategoryId", null, "- Select Category -", new { @class = "form-control" })
+        @Html.TextBox("tags")
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

@@ -16,7 +16,11 @@ namespace CSharpBlog.Controllers
         public ActionResult Index(string q, int? page)
         {
             var pageNumber = page ?? 1;
-            var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).OrderByDescending(x => x.DateCreated);
+            var posts = db.Posts.Include(p => p.Author)
+                                .Include(p => p.Category)
+                                .Include(p => p.Tags)
+                                .Include(p => p.Comments)
+                                .OrderByDescending(x => x.DateCreated);
             
             if (!string.IsNullOrEmpty(q))
             {

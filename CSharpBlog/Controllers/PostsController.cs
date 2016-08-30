@@ -53,11 +53,21 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include = "Id,Title,Body,DateCreated,CategoryId")] Post post)
+        public ActionResult Create([Bind(Include = "Id,Title,Body,DateCreated,CategoryId")] Post post, string tags)
         {
             if (ModelState.IsValid)
             {
                 string currentUserId = User.Identity.GetUserId();
+                string[] t = tags.Split(new string[] { ", " }, StringSplitOptions.None);
+                post.Tags = new HashSet<Tag>();
+                foreach (var tag in t)
+                {
+                    if (!db.Tags.Any(x => x.Name.ToLower()==tag.ToLower()))
+                    {
+                        db.Tags.Add(new Tag() { Name = tag });
+                    }
+                    post.Tags.Add(db.Tags.FirstOrDefault(x => x.Name.ToLower() == tag.ToLower()));
+                }
                 post.Author =  db.Users.FirstOrDefault(x => x.Id == currentUserId);
                 db.Posts.Add(post);
                 db.SaveChanges();
@@ -91,7 +101,7 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,Title,Body,CategoryId")] Post post)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,CategoryId,Views,DateCreated")] Post post)
         {
             if (ModelState.IsValid)
             {
