@@ -15,6 +15,7 @@ namespace CSharpBlog.Controllers
 
         public ActionResult Index(string q, int? page)
         {
+            ViewBag.Q = q;
             var pageNumber = page ?? 1;
             var posts = db.Posts.Include(p => p.Author)
                                 .Include(p => p.Category)

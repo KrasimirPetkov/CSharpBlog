@@ -1,0 +1,52 @@
+﻿@model CSharpBlog.Models.Post
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-12 post-title text-center">
+                @Html.ActionLink(Model.Title, "Details", "Posts", new { id = Model.Id }, null)
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="col-xs-6 col-md-3">
+            @Model.Category.Name
+        </div>
+        <div class="col-xs-6 col-md-3">
+            @Model.Author.FullName
+        </div>
+        <div class="col-xs-6 col-md-3">
+            @Model.DateCreated
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <span class="glyphicon glyphicon-eye-open"></span>
+            @Model.Views<span> | </span>
+            <span class="glyphicon glyphicon-comment"></span>
+            @Model.Comments.Count()
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="col-xs-12">
+            <p>@Html.Raw(Model.Body)</p>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-xs-8">
+                @foreach (var tag in Model.Tags)
+                {
+                    <span class="btn btn-default">@tag.Name</span>
+                }
+            </div>
+            <div class="col-xs-4 text-right">
+                @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
+                {
+                    <div class="btn btn-group">
+                        @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.Id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Delete", "Delete", "Posts", new { id = Model.Id }, new { @class = "btn btn-info" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

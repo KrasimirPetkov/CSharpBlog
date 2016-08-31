@@ -53,7 +53,7 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Create([Bind(Include = "Id,Title,Body,DateCreated,CategoryId")] Post post, string tags)
+        public ActionResult Create([Bind(Include = "Id,Title,Body,CategoryId")] Post post, string tags)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +66,7 @@ namespace CSharpBlog.Controllers
                     {
                         db.Tags.Add(new Tag() { Name = tag });
                     }
+                    db.SaveChanges();
                     post.Tags.Add(db.Tags.FirstOrDefault(x => x.Name.ToLower() == tag.ToLower()));
                 }
                 post.Author =  db.Users.FirstOrDefault(x => x.Id == currentUserId);

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CSharpBlog.Models;
 using PagedList;
+using Microsoft.AspNet.Identity;
 
 namespace CSharpBlog.Controllers
 {
@@ -22,12 +23,13 @@ namespace CSharpBlog.Controllers
             int comCount = db.Comments.Where(c => c.PostId == postId).Count();
             var pageNumber = page ?? (comCount%4!=0?comCount/4+1:comCount/4);
             pageNumber = pageNumber == 0 ? 1 : pageNumber;
-            var comments = db.Comments.Where(c => c.PostId == postId).ToList();
+            var comments = db.Comments.Where(c => c.PostId == postId).Include(c => c.Author).ToList();
             var currentPage = comments.ToPagedList(pageNumber, 4);
             return PartialView(currentPage);
         }
 
         // GET: Comments/Create
+        [Authorize]
         public ActionResult Create(int postId)
         {
             ViewBag.PostId = postId;
@@ -38,11 +40,14 @@ namespace CSharpBlog.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,PostId,Body")] Comment comment)
         {
+            string currentUserId = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
+                comment.ApplicationUserId = db.Users.FirstOrDefault(x => x.Id == currentUserId).Id;
                 db.Comments.Add(comment);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Posts", new { @id = comment.PostId });
@@ -52,6 +57,7 @@ namespace CSharpBlog.Controllers
         }
 
         // GET: Comments/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -70,6 +76,7 @@ namespace CSharpBlog.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,PostId,Body,DateCreated,DateModified")] Comment comment)
         {

@@ -14,6 +14,7 @@ namespace CSharpBlog.Models
 
         public int Id { get; set; }
         public int PostId { get; set; }
+        public string ApplicationUserId { get; set; }
         public string Body { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
