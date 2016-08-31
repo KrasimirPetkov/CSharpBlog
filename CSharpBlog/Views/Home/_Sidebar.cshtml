@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CSharpBlog.Models.Category>
+<div class="well">
+    <h1>Sidebar</h1>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+            {
+        @Html.Label("Search: ")
+        @Html.TextBox("q", null, new { @class = "form-control" })
+        <input type="submit" value="Search" class="btn btn-default" />
+    }
+    <hr />
+    @foreach (var category in Model)
+    {
+        <p class="text-center" style="font-size:large">
+            @Html.ActionLink(category.Name, "Category", new { @id = category.CategoryId })
+        </p>
+    }
+</div>

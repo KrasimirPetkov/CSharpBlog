@@ -16,6 +16,7 @@ namespace CSharpBlog.Controllers
         public ActionResult Index(string q, int? page)
         {
             ViewBag.Q = q;
+            ViewBag.C = db.Categories;
             var pageNumber = page ?? 1;
             var posts = db.Posts.Include(p => p.Author)
                                 .Include(p => p.Category)
@@ -44,6 +45,36 @@ namespace CSharpBlog.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult Sidebar()
+        {
+            return PartialView(db.Categories.ToList());
+        }
+
+        public ActionResult Category(int id)
+        {
+            var posts = db.Posts.OrderByDescending(a => a.DateCreated).Where(x => x.CategoryId == id)
+                                .Include(x => x.Category)
+                                .Include(x => x.Tags)
+                                .Include(x => x.Comments)
+                                .Include(x => x.Author);
+            ViewBag.Category = db.Categories.Find(id).Name;
+            ViewBag.C = db.Categories;
+            return View(posts);
+        }
+
+        public ActionResult Tag(int id)
+        {
+            var posts = db.Posts.OrderByDescending(a => a.DateCreated).Where(x => x.Tags.Contains(db.Tags.FirstOrDefault(y => y.TagId==id)))
+                                .Include(x => x.Category)
+                                .Include(x => x.Tags)
+                                .Include(x => x.Comments)
+                                .Include(x => x.Author);
+            ViewBag.Tag = db.Tags.Find(id).Name;
+            ViewBag.C = db.Categories;
+            return View(posts); ;
         }
 
         protected override void Dispose(bool disposing)

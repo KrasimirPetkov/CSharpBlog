@@ -1,8 +1,7 @@
-﻿@model IPagedList<CSharpBlog.Models.Post>
-@using PagedList.Mvc;
-@using PagedList;
+﻿@model IEnumerable<CSharpBlog.Models.Post>
+
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Category";
 }
 
 <div class="row">
@@ -12,11 +11,11 @@
 </div>
 <div class="row">
     <div class="col-md-9">
-        @foreach (var post in Model)
+        <h2>Search by Category: @ViewBag.Category</h2>
+        @foreach (var item in Model)
         {
-            { Html.RenderPartial("_Post", post); }
+            { Html.RenderPartial("_Post", item); }
         }
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, q = (string)ViewBag.Q }))
     </div>
     <div class="col-md-3">
         @{Html.RenderPartial("_Sidebar", (IEnumerable<CSharpBlog.Models.Category>)ViewBag.C);}

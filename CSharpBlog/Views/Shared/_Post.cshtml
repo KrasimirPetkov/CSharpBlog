@@ -35,7 +35,7 @@
             <div class="col-xs-8">
                     @foreach (var tag in Model.Tags)
                     {
-                        <span class="btn btn-default">@tag.Name</span>
+                        @Html.ActionLink(tag.Name, "Tag", "Home", new { @id = tag.TagId }, new { @class= "btn btn-default" })
                     }
             </div>
             <div class="col-xs-4 text-right">

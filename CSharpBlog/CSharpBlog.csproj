@@ -277,6 +277,9 @@
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Shared\_Post.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Home\_Sidebar.cshtml" />
+    <Content Include="Views\Home\Category.cshtml" />
+    <Content Include="Views\Home\Tag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
