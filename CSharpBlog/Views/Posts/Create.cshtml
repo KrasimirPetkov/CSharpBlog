@@ -4,39 +4,38 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
+<h3>Create New Post</h3>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
-        <h4>Post</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-xs-12">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control wide" } })
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-xs-12">
                 @Html.TextAreaFor(model => model.Body, new { @class = "form-control", @id = "ckedt" })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
-                <script>
-                    CKEDITOR.replace('ckedt');
-                </script>
+                <script>CKEDITOR.replace('ckedt');</script>
             </div>
         </div>
-        @Html.DropDownList("CategoryId", null, "- Select Category -", new { @class = "form-control" })
-        @Html.TextBox("tags")
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.CategoryId, null, "- Select Category -", new { @class = "form-control wide" })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-8">
+                @Html.TextBox("tags", null, null, new { @class = "form-control wide", placeholder = "Add Tags Here" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
@@ -47,9 +46,6 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 @section CKEditor {
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 }

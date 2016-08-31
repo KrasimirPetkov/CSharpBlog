@@ -87,11 +87,11 @@ namespace CSharpBlog.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Posts.FirstOrDefault(x => x.Id == id);
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", post.Category.CategoryId);
             if (post == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", post.Category.CategoryId);
             return View(post);
         }
 
@@ -102,7 +102,7 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,Title,Body,CategoryId,Views,DateCreated")] Post post)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,Views,DateCreated,CategoryId")] Post post, string tags)
         {
             if (ModelState.IsValid)
             {

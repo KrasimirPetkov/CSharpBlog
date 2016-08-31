@@ -45,3 +45,7 @@ textarea {
 .wide {
     max-width: 100%;
 }
+
+.bgrey {
+    border-right: 1px solid #c0c0c0;
+}

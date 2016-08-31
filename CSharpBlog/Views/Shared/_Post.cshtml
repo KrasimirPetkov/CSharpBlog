@@ -9,44 +9,46 @@
         </div>
     </div>
     <div class="panel-body">
-        <div class="col-xs-6 col-md-3">
+        <div class="col-xs-6 col-md-3 bgrey">
             @Model.Category.Name
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="col-xs-6 col-md-3 bgrey text-center">
             @Model.Author.FullName
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="col-xs-6 col-md-3 bgrey text-center">
             @Model.DateCreated
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="col-xs-6 col-md-3 text-right">
             <span class="glyphicon glyphicon-eye-open"></span>
             @Model.Views<span> | </span>
             <span class="glyphicon glyphicon-comment"></span>
             @Model.Comments.Count()
         </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="border-top: 1px solid #e0e0e0;">
         <div class="col-xs-12">
-            <p>@Html.Raw(Model.Body)</p>
+            <p>@Html.Raw(CSharpBlog.Utilities.PostText.Trim(Model.Body))</p>
         </div>
     </div>
     <div class="panel-footer">
         <div class="row">
             <div class="col-xs-8">
-                @foreach (var tag in Model.Tags)
-                {
-                    <span class="btn btn-default">@tag.Name</span>
-                }
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span class="btn btn-default">@tag.Name</span>
+                    }
             </div>
             <div class="col-xs-4 text-right">
-                @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
+                @if (HttpContext.Current.User.IsInRole("Administrator"))
                 {
-                    <div class="btn btn-group">
-                        @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.Id }, new { @class = "btn btn-info" })
-                        @Html.ActionLink("Delete", "Delete", "Posts", new { id = Model.Id }, new { @class = "btn btn-info" })
-                    </div>
+                    using (Html.BeginForm("Delete", "Posts", new { @id=Model.Id }, FormMethod.Post))
+                    {
+                            @Html.AntiForgeryToken()
+                            @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.Id }, new { @class = "btn btn-info" })
+                            <input type="submit" value="Delete" class="btn btn-info" />
+                    }
                 }
-            </div>
+                </div>
         </div>
     </div>
 </div>
