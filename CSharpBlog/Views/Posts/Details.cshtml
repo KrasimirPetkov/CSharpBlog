@@ -16,34 +16,7 @@
     @Html.Raw(Model.Body)
 </div>
 <div>
-    @foreach (var comment in (IEnumerable<Comment>)Model.Comments)
-    {
-        <div id="@comment.Id.ToString()">
-            @comment.DateCreated<br />
-            @comment.Body
-            @if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrator"))
-            {
-                <span class="comment-edit">
-                    [
-                    @Ajax.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, new AjaxOptions
-                    {
-                        UpdateTargetId = comment.Id.ToString(),
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET"
-                    }, null)
-                    <span>|</span>
-                    @Ajax.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, new AjaxOptions
-                    {
-                        UpdateTargetId = comment.Id.ToString(),
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET"
-                    }, null)
-                    ]
-                </span>
-            }
-        </div>
-        
-    }
+    @Html.Action("Index", "Comments", new { postId=Model.Id })
 </div>
 <div>
     @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions

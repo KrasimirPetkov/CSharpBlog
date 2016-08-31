@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CSharpBlog.Models;
+using PagedList;
 
 namespace CSharpBlog.Controllers
 {
@@ -15,9 +16,15 @@ namespace CSharpBlog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Comments
-        public ActionResult Index(int postId)
+        public ActionResult Index(int postId, int? page)
         {
-            return PartialView(db.Comments.Where(c => c.PostId == postId).ToList());
+            ViewBag.PostId = postId;
+            int comCount = db.Comments.Where(c => c.PostId == postId).Count();
+            var pageNumber = page ?? (comCount%4!=0?comCount/4+1:comCount/4);
+            pageNumber = pageNumber == 0 ? 1 : pageNumber;
+            var comments = db.Comments.Where(c => c.PostId == postId).ToList();
+            var currentPage = comments.ToPagedList(pageNumber, 4);
+            return PartialView(currentPage);
         }
 
         // GET: Comments/Create
