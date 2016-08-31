@@ -3,5 +3,18 @@
 }
 
 <div class="row">
-    <div class="well col-md-6">@Html.Action("Index", "Tags")</div>
+    <div class="col-md-4">
+        <div class="well">
+            <h3>Blog</h3>
+            <ul>
+                <li>Users: @ViewBag.UC</li>
+                <li>Posts: @ViewBag.PC</li>
+                <li>Comments: @ViewBag.CoC</li>
+                <li>Categories: @ViewBag.CaC</li>
+                <li>Tags: @ViewBag.TC</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4"><div class="well">@Html.Action("Index", "Categories")</div></div>
+    <div class="col-md-4"><div class="well">@Html.Action("Index", "Tags")</div></div>
 </div>

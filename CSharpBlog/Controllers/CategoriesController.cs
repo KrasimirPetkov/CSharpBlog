@@ -17,28 +17,13 @@ namespace CSharpBlog.Controllers
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
-        }
-
-        // GET: Categories/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
+            return PartialView(db.Categories.ToList());
         }
 
         // GET: Categories/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Categories/Create
@@ -52,7 +37,7 @@ namespace CSharpBlog.Controllers
             {
                 db.Categories.Add(category);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Admin", null);
             }
 
             return View(category);
@@ -70,7 +55,7 @@ namespace CSharpBlog.Controllers
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Categories/Edit/5
@@ -84,24 +69,9 @@ namespace CSharpBlog.Controllers
             {
                 db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Admin", null);
             }
-            return View(category);
-        }
-
-        // GET: Categories/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Categories/Delete/5
@@ -112,7 +82,7 @@ namespace CSharpBlog.Controllers
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Admin", null);
         }
 
         protected override void Dispose(bool disposing)

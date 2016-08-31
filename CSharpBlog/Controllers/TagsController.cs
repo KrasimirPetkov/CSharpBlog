@@ -24,7 +24,7 @@ namespace CSharpBlog.Controllers
         // GET: Tags/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Tags/Create
@@ -38,7 +38,7 @@ namespace CSharpBlog.Controllers
             {
                 db.Tags.Add(tag);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Admin", null);
             }
 
             return View(tag);
@@ -70,22 +70,7 @@ namespace CSharpBlog.Controllers
             {
                 db.Entry(tag).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(tag);
-        }
-
-        // GET: Tags/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Tag tag = db.Tags.Find(id);
-            if (tag == null)
-            {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Admin", null);
             }
             return View(tag);
         }
@@ -98,7 +83,7 @@ namespace CSharpBlog.Controllers
             Tag tag = db.Tags.Find(id);
             db.Tags.Remove(tag);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Admin", null);
         }
 
         protected override void Dispose(bool disposing)

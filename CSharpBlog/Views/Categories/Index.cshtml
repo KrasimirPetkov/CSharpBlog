@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CSharpBlog.Models.Category>
+@{
+    Layout = null;
+}
+
+<h3>Categories List</h3>
+@foreach (var category in Model)
+{
+    <div class="row" id="@category.CategoryId.ToString()">
+        <div class="col-xs-6">
+            @Html.DisplayFor(modelItem => category.Name)
+        </div>
+        <div class="col-xs-6 text-right">
+            @using (Html.BeginForm("Delete", "Categories", new { id = category.CategoryId }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Ajax.ActionLink("Edit", "Edit", "Categories", new { id = category.CategoryId }, new AjaxOptions
+                {
+                    UpdateTargetId = category.CategoryId.ToString(),
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET"
+                }, new { @class = "btn btn-default" })
+                <input type="submit" value="Delete" class="btn btn-default" />
+            }
+        </div>
+    </div>
+}
+<br />
+@Html.Partial("~/Views/Categories/Create.cshtml", new CSharpBlog.Models.Category())

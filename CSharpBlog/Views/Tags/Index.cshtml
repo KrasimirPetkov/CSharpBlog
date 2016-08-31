@@ -1,27 +1,28 @@
 ﻿@model IEnumerable<CSharpBlog.Models.Tag>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TagId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TagId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TagId })
-        </td>
-    </tr>
+@{
+    Layout = null;
 }
 
-</table>
+<h3>Tags List</h3>
+@foreach (var tag in Model)
+{
+    <div class="row" id="@Convert.ToString($"{tag.TagId}t")">
+        <div class="col-xs-6">
+            @Html.DisplayFor(modelItem => tag.Name)
+        </div>
+        <div class="col-xs-6 text-right">
+            @using (Html.BeginForm("Delete", "Tags", new { id = tag.TagId }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Ajax.ActionLink("Edit", "Edit", "Tags", new { id = tag.TagId }, new AjaxOptions {
+                    UpdateTargetId = Convert.ToString($"{tag.TagId}t"),
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET"
+                }, new { @class = "btn btn-default" })
+                <input type="submit" value="Delete" class="btn btn-default" />
+            }
+        </div>
+    </div>
+}
+<br />
+@Html.Partial("~/Views/Tags/Create.cshtml", new CSharpBlog.Models.Tag())
