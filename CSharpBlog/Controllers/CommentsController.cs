@@ -78,28 +78,13 @@ namespace CSharpBlog.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,PostId,Body,DateCreated,DateModified")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,PostId,Body,DateCreated,ApplicationUserId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Details", "Posts", new { @id = comment.PostId });
-            }
-            return View(comment);
-        }
-
-        // GET: Comments/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
             }
             return View(comment);
         }

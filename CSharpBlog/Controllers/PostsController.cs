@@ -102,7 +102,7 @@ namespace CSharpBlog.Controllers
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,Title,Body,Views,DateCreated,CategoryId")] Post post, string tags)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,Views,DateCreated,CategoryId")] Post post)
         {
             if (ModelState.IsValid)
             {

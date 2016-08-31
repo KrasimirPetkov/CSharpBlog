@@ -5,30 +5,53 @@
     ViewBag.Title = Model.Title;
 }
 
-<h2>@Model.Title</h2>
-<h4>By: @Model.Author.FullName</h4>
-<h4>Created: @Model.DateCreated</h4>
-@if (Model.DateModified!=null)
-{
-    <h4>Last edited: @Model.DateModified</h4>
-}
-<div>
-    @Html.Raw(Model.Body)
-</div>
-<div>
-    @Html.Action("Index", "Comments", new { postId=Model.Id })
-</div>
-<div>
-    @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions
-    {
-        UpdateTargetId = "renderComments",
-        InsertionMode = InsertionMode.Replace,
-        HttpMethod = "GET"
-    }, new { @class = "btn btn-default" })
-    <div id="renderComments">
+<h2 class="text-center">@Model.Title</h2>
+<div class="row bb">
+    <div class="col-md-4"><h5 style="border-right: 1px solid #f0f0f0">By: @Model.Author.FullName</h5></div>
+    <div class="col-md-4"><h5 style="border-right: 1px solid #f0f0f0">Created: @Model.DateCreated</h5></div>
+    <div class="col-md-4">
+        @if (Model.DateModified != null)
+        {
+            <h5>Last edited: @Model.DateModified</h5>
+        }
     </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<br />
+<div class="row">
+    <div class="col-xs-12 lead">
+        @Html.Raw(Model.Body)
+    </div>
+</div>
+<br />
+@if (Model.Comments.Count() > 0)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4 style="border-bottom:1px solid #f0f0f0">Comments:</h4>
+            @Html.Action("Index", "Comments", new { postId = Model.Id })
+        </div>
+    </div>
+}
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <div id="newcomment" class="row">
+        <div class="col-xs-12 input-group">
+            @Ajax.ActionLink("New Comment", "Create", "Comments", new { postId = Model.Id }, new AjaxOptions
+       {
+           UpdateTargetId = "newcomment",
+           InsertionMode = InsertionMode.Replace,
+           HttpMethod = "GET"
+       }, new { @class = "btn btn-default" })
+        </div>
+    </div>
+} else { <p>Log in to comment!</p>}
+<br />
+<div class="row">
+    <div class="col-xs-12">
+        @if (Context.User.IsInRole("Administrator"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
+        }
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </div>
+</div>
