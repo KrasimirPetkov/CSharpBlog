@@ -1,0 +1,14 @@
+﻿Blog Features:
+	- User registration / login / logout.
+	- View all posts with paging, without login.
+	- Create new post by the blog owner (after login). Each post has tags and category.
+
+	- Add comments for every post by visitors – each visitor must be registered user.
+	- Sidebar holding a list of categories and search form.
+	- Counter of visits for each post.
+	- Functionality for searching by tags and category.
+	- Admin: add/edit/delete posts, comments, tags, categories.
+
+Administrator Account
+	E-Mail: administrator@csharpblog.bg
+	Password: administrator

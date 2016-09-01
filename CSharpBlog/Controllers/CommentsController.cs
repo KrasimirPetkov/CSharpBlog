@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using CSharpBlog.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
+using CSharpBlog.Utilities;
 
 namespace CSharpBlog.Controllers
 {
@@ -30,6 +31,7 @@ namespace CSharpBlog.Controllers
 
         // GET: Comments/Create
         [Authorize]
+        [AjaxOnly]
         public ActionResult Create(int postId)
         {
             ViewBag.PostId = postId;
@@ -58,6 +60,7 @@ namespace CSharpBlog.Controllers
 
         // GET: Comments/Edit/5
         [Authorize(Roles = "Administrator")]
+        [AjaxOnly]
         public ActionResult Edit(int? id)
         {
             if (id == null)

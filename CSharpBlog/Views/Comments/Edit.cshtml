@@ -2,7 +2,7 @@
 @{ 
     Layout = null;
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm(FormMethod.Post))
 {
     <div class="col-xs-12 input-group">
         @Html.AntiForgeryToken()
