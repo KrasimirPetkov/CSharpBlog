@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CSharpBlog.Models;
+using CSharpBlog.Utilities;
 
 namespace CSharpBlog.Controllers
 {
@@ -22,6 +23,8 @@ namespace CSharpBlog.Controllers
         }
 
         // GET: Tags/Create
+        [Authorize(Roles = "Administrator")]
+        [AjaxOnly]
         public ActionResult Create()
         {
             return PartialView();
@@ -45,6 +48,8 @@ namespace CSharpBlog.Controllers
         }
 
         // GET: Tags/Edit/5
+        [Authorize(Roles = "Administrator")]
+        [AjaxOnly]
         public ActionResult Edit(int? id)
         {
             if (id == null)

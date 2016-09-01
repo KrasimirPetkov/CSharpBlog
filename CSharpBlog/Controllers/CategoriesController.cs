@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CSharpBlog.Models;
+using CSharpBlog.Utilities;
 
 namespace CSharpBlog.Controllers
 {
@@ -15,12 +16,15 @@ namespace CSharpBlog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categories
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             return PartialView(db.Categories.ToList());
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "Administrator")]
+        [AjaxOnly]
         public ActionResult Create()
         {
             return PartialView();
@@ -44,6 +48,8 @@ namespace CSharpBlog.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Administrator")]
+        [AjaxOnly]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -75,6 +81,7 @@ namespace CSharpBlog.Controllers
         }
 
         // POST: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
